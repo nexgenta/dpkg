@@ -37,7 +37,11 @@ extern "C" {
 #include <ctype.h>
 #include <assert.h>
 
+#if HAVE_NCURSESW_TERM_H
 #include <ncursesw/term.h>
+#elif HAVE_TERM_H
+#include <term.h>
+#endif
 
 extern "C" {
 #include <dpkg.h>

@@ -97,6 +97,7 @@ AC_CHECK_LIB([ncursesw], [initscr], [CURSES_LIBS="${CURSES_LIBS:+$CURSES_LIBS }-
 	[AC_CHECK_LIB([ncurses], [initscr], [CURSES_LIBS="${CURSES_LIBS:+$CURSES_LIBS }-lncurses"],
 		[AC_CHECK_LIB([curses], [initscr], [CURSES_LIBS="${CURSES_LIBS:+$CURSES_LIBS }-lcurses"],
 			[AC_MSG_WARN([no curses library found])])])])
+AC_CHECK_HEADERS([ncursesw/curses.h ncursesw/term.h ncurses.h curses.h term.h])
 ])# DPKG_LIB_CURSES
 
 # DPKG_LIB_SSD
