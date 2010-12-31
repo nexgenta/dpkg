@@ -7,9 +7,12 @@ AC_DEFUN([SJR_LINKER_OPTIMISATIONS],
 [AC_ARG_ENABLE(linker-optimisations,
 	AS_HELP_STRING([--disable-linker-optimisations],
 		       [Disable linker optimisations]),
-[if test "x$enable_linker_optimisations" = "xno"; then
-	[LDFLAGS=`echo "$LDFLAGS" | sed -e "s/ -Wl,-O[0-9]*\b//g"`]
-else
-	[LDFLAGS="$LDFLAGS -Wl,-O1"]
-fi], [LDFLAGS="$LDFLAGS -Wl,-O1"])dnl
+[
+if test x"$host_os" = x"linux-gnu" ; then
+    if test "x$enable_linker_optimisations" = "xno"; then
+	    [LDFLAGS=`echo "$LDFLAGS" | sed -e "s/ -Wl,-O[0-9]*\b//g"`]
+	else
+	    [LDFLAGS="$LDFLAGS -Wl,-O1"]
+    fi
+fi], [test x"$host_os" = x"linux_gnu" && LDFLAGS="$LDFLAGS -Wl,-O1"])dnl
 ])
