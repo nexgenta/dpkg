@@ -28,7 +28,17 @@ AC_ARG_WITH(start-stop-daemon,
 	AS_HELP_STRING([--without-start-stop-daemon],
 		       [don't build or use start-stop-daemon]),
 	[build_start_stop_daemon=$with_start_stop_daemon],
-	[build_start_stop_daemon=yes])
+	[build_start_stop_daemon=auto])
+if test $build_start_stop_daemon = auto ; then
+   case "$host_os" in
+   		darwin*)
+				build_start_stop_daemon=no
+				;;
+		*)
+				build_start_stop_daemon=yes
+				;;
+   esac
+fi
 AM_CONDITIONAL(WITH_START_STOP_DAEMON,
 	[test "x$build_start_stop_daemon" = "xyes"])
 if test "x$build_start_stop_daemon" = "xyes"; then
