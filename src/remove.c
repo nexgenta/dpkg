@@ -258,7 +258,7 @@ static void removal_bulk_remove_files(
 	      fnvb.buf);
         push_leftover(&leftover,namenode);
         continue;
-      } else if (errno == EBUSY || errno == EPERM) {
+      } else if (errno == EBUSY || errno == EPERM || errno == EINVAL) {
         fprintf(stderr, _("dpkg - warning: while removing %.250s,"
                 " unable to remove directory `%.250s':"
                 " %s - directory may be a mount point ?\n"),
