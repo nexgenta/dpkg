@@ -168,10 +168,26 @@ $v{DEB_HOST_GNU_TYPE} = $req_host_gnu_type if $req_host_gnu_type ne '';
 
 my $gcc = get_gcc_host_gnu_type();
 
+# On Darwin, the CPU portion of the gcc host type may be misleading
+if ($gcc =~ m/(i486|x86_64)-(pc-|apple-)?darwin$/ &&
+	$v{DEB_HOST_GNU_TYPE} =~ m/(i486|x86_64)-(pc-|apple-)?darwin$/)
+{
+	$gcc = $v{DEB_HOST_GNU_TYPE}
+}
+
 warning(_g("Specified GNU system type %s does not match gcc system type %s."),
         $v{DEB_HOST_GNU_TYPE}, $gcc)
     if !($req_is_arch or $req_eq_arch) &&
        ($gcc ne '') && ($gcc ne $v{DEB_HOST_GNU_TYPE});
+
+if($ENV{DPKG_BOOTSTRAP})
+{
+	if($v{DEB_BUILD_ARCH} eq '' && $v{DEB_HOST_ARCH} ne '')
+	{
+		$v{DEB_BUILD_ARCH} = $v{DEB_HOST_ARCH};
+		$v{DEB_BUILD_GNU_TYPE} = debarch_to_gnutriplet($v{DEB_BUILD_ARCH});
+	}
+}
 
 # Split the Debian and GNU names
 my $abi;

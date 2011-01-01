@@ -32,8 +32,14 @@ my %debarch_to_debtriplet;
     {
 	return $build_arch if defined $build_arch;
 
+	# We should always behave consistently when being executed by configure,
+	# irrespective of whether dpkg is already present on the system or not.
+	if($ENV{DPKG_BOOTSTRAP})
+	{
+		my $build_arch='';
+		return $build_arch;
+	}
 	my $build_arch = `dpkg --print-architecture`;
-	# FIXME: Handle bootstrapping
 	syserr("dpkg --print-architecture failed") if $? >> 8;
 
 	chomp $build_arch;

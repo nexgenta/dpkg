@@ -5,7 +5,7 @@
 AC_DEFUN([_DPKG_ARCHITECTURE], [
 AC_REQUIRE([AC_CANONICAL_SYSTEM])dnl
 $2=`cd $srcdir/scripts; \
-    PERL5LIB=$(pwd) ./dpkg-architecture.pl -t$target -q$1 2>/dev/null`
+    PERL5LIB=$(pwd) DPKG_BOOTSTRAP=1 ./dpkg-architecture.pl -t$target -q$1 2>/dev/null`
 ])# _DPKG_ARCHITECURE
 
 # DPKG_CPU_TYPE
