@@ -217,10 +217,26 @@ void process_archive(const char *filename) {
   if (pkg->available.architecture && *pkg->available.architecture &&
       strcmp(pkg->available.architecture,"all") &&
       strcmp(pkg->available.architecture,architecture))
-    forcibleerr(fc_architecture,
-                _("package architecture (%s) does not match system (%s)"),
-                pkg->available.architecture,architecture);
-    
+  {
+	  int match = 0;
+	  char *ap, *tp;
+
+	  /* handle "universal" packages with an architecture in the form
+	   * opsys-universal
+	   */
+	  if ((tp = strchr(architecture, '-')) && (ap = strchr(pkg->available.architecture, '-')) &&
+		  !strcmp(ap, "-universal") &&
+		  tp - architecture == ap - pkg->available.architecture &&
+		  !strncmp(architecture, pkg->available.architecture, tp - architecture))
+	  {
+		  match = 1;
+	  }
+	  if (!match)
+		  forcibleerr(fc_architecture,
+					  _("package architecture (%s) does not match system (%s)"),
+					  pkg->available.architecture,architecture);
+  }
+
   if (!pkg->installed.valid) blankpackageperfile(&pkg->installed);
   assert(pkg->available.valid);
 
