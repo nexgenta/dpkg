@@ -59,6 +59,16 @@ AC_ARG_WITH(admindir,
 esac])
 AC_SUBST(admindir)
 
+case "$host_os" in
+	darwin*)
+		AC_DEFINE([WITH_LDCONFIG], 0)
+		AC_DEFINE([WITH_UPDATE_RC_D], 0)
+		;;
+	*)
+		AC_DEFINE([WITH_LDCONFIG], 1, [expect 'ldconfig' to be present on the system])
+		AC_DEFINE([WITH_UPDATE_RC_D], 1, [expect 'update-rc.d' to be present on the system])
+		;;
+esac
 
 # Checks for programs.
 AC_PROG_CC
